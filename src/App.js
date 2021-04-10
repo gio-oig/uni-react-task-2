@@ -1,23 +1,34 @@
-import logo from './logo.svg';
+import { useState } from 'react';
+
+import NavBar from './components/navBar/NavBar';
+import PostsPage from './pages/postsPage/PostsPage';
+import UsersPage from './pages/usersPage/UsersPage';
+
 import './App.css';
+import UserProvider from './provider/UserProvider';
+import PostProvider from './provider/PostProvider';
 
 function App() {
+  const [page, setPage] = useState({
+    usersPage: true,
+    postsPage: false,
+  });
+
+  const changePage = (page) => () => {
+    let newState = {};
+    setPage((state) => {
+      for (const key in state) {
+        newState[key] = false;
+      }
+      return { ...newState, [page]: true };
+    });
+  };
+
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <NavBar changePage={changePage} />
+      <UserProvider>{page.usersPage && <UsersPage />}</UserProvider>
+      <PostProvider>{page.postsPage && <PostsPage />}</PostProvider>
     </div>
   );
 }
