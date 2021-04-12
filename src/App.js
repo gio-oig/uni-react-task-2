@@ -17,10 +17,8 @@ function App() {
   const changePage = (page) => () => {
     let newState = {};
     setPage((state) => {
-      for (const key in state) {
-        newState[key] = false;
-      }
-      return { ...newState, [page]: true };
+      for (const key in state) newState[key] = key === page ? true : false;
+      return newState;
     });
   };
 
